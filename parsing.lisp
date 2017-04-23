@@ -89,7 +89,7 @@
 (defmacro defmeta (name other-args &body body)
   `(defun ,name (string &optional (index 0) (end (length string))
 			,@other-args)
-     (declare (simple-base-string string)
+     (declare (string string)
 	      (fixnum index end))
      ,@body))
 
