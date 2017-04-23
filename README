@@ -1,0 +1,77 @@
+chemical-compounds -- parsing, pretty-printing, and formula weights of
+chemical compounds.
+
+Copyright 2004 Peter Scott
+Released under the LLGPL (see
+http://opensource.franz.com/preamble.html).
+
+Introduction
+============
+
+Sometimes you want to be able to parse chemical formulas in a
+normal, user-friendly syntax. For example, water is usually written
+"H2O". This representation is good for users, but for Lisp code, you
+need a different representation. In chemical-compounds, H2O would be
+represented as ((H 2) O).
+
+A more complicated molecule is glucose, C6H12O6. This is
+((C 6) (H 12) (O 6)) in our internal representation. You may have
+noticed that "C6H12O6" is ugly and hard to read, due to the clunky way
+that plain text deals with the subscripts. Therefore, in the format
+used by chemical-compounds, glucose is "C6 H12 O6", with spaces.
+
+Some chemical formulas parenthesize parts of the compound and add a
+subscript. The formula "(C O2)4 H2" would be parsed as
+(((C (O 2)) 4) (H 2)).
+
+
+Functions
+=========
+
+The :compounds package exports four functions:
+
+
+(pprint-compound compound stream): takes a compound in the Lisp
+internal representation and prints it to a stream in the pretty
+syntax.
+
+Example:
+
+(with-output-to-string (s) (pprint-compound '((H 2) O) s))
+=> "H2 O"
+
+-----------
+
+(parse-compound string): parse a compound string and return the
+internal Lisp representation of it.
+
+Examples:
+
+(parse-compound "C6 H12 O6") => ((C 6) (H 12) (O 6))
+(parse-compound "(C O2)4 H2") => (((C (O 2)) 4) (H 2))
+
+-----------
+
+(formula-weight compound): Calculate the number of grams per mole of a
+compound.
+
+Examples:
+
+(formula-weight '((C 6) (H 12) (O 6))) => 180.15768
+(formula-weight (parse-compound "C6 H12 O6")) => 180.15768
+
+-----------
+
+(get-compound compound): Return a compound designator given either a
+compound designator or a string in compound syntax.
+
+Examples:
+
+(get-compound "C6 H12 O6") => ((C 6) (H 12) (O 6))
+(get-compound '((C 6) (H 12) (O 6))) => ((C 6) (H 12) (O 6))
+
+-----------
+
+
+If you have any questions, please ask them on the chemboy-devel mailing list
+at <chemboy-devel@common-lisp.net>.
